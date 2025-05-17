@@ -1,0 +1,319 @@
+
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+       
+        <!-- Hero Start -->
+        <div class="container-fluid py-5 mb-5 hero-header">
+            <div class="container py-5">
+                <div class="row g-5 align-items-center">
+                    <div class="col-md-12 col-lg-7">
+                        <h4 class="mb-3 text-secondary">100% Organik Oziq-ovqatlar</h4>
+                        <h1 class="mb-5 display-3 text-primary">O'zbekistondan quritilgan mevalar va yong'oqlar ulgurji</h1>
+                        <div class="position-relative mx-auto">
+                            <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="number" placeholder="Qidirish">
+                            <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%;">Hozir yuboring</button>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-5">
+                        <div class="position-relative" style="height: 100%;">
+                            <img src="{% static 'img/hero-img-1.png' %}" 
+                                 class="img-fluid w-100 h-100 bg-secondary rounded animate-updown" 
+                                 alt="First slide" 
+                                 style="object-fit: contain;">
+                        </div>
+                    </div>
+                    <style>
+                    @keyframes updown {
+                        0% { transform: translateY(0); }
+                        50% { transform: translateY(-30px); }
+                        100% { transform: translateY(0); }
+                    }
+                    .animate-updown {
+                        animation: updown 2s infinite;
+                    }
+                    </style>
+                </div>
+            </div>
+        </div>
+        <!-- Hero End -->
+
+
+        <!-- Featurs Section Start -->
+        <div class="container-fluid featurs py-5">
+            <div class="container py-5">
+                <div class="row g-4">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="featurs-item text-center rounded bg-light p-4">
+                            <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
+                                <i class="fas fa-car-side fa-3x text-white"></i>
+                            </div>
+                            <div class="featurs-content text-center">
+                                <h5>Yetkazib berish bepul</h5>
+                                <p class="mb-0">$300 dan ortiq buyurtma berish uchun bepul</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="featurs-item text-center rounded bg-light p-4">
+                            <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
+                                <i class="fas fa-user-shield fa-3x text-white"></i>
+                            </div>
+                            <div class="featurs-content text-center">
+                                <h5>Xavfsizlik to'lovi</h5>
+                                <p class="mb-0">100% xavfsizlik to'lovi</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="featurs-item text-center rounded bg-light p-4">
+                            <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
+                                <i class="fas fa-exchange-alt fa-3x text-white"></i>
+                            </div>
+                            <div class="featurs-content text-center">
+                                <h5>30 kunlik qaytish</h5>
+                                <p class="mb-0">30 kunlik pul kafolati</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="featurs-item text-center rounded bg-light p-4">
+                            <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
+                                <i class="fa fa-phone-alt fa-3x text-white"></i>
+                            </div>
+                            <div class="featurs-content text-center">
+                                <h5>24/7 qo'llab-quvvatlash</h5>
+                                <p class="mb-0">Har safar tez qo'llab-quvvatlang</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Featurs Section End -->
+
+
+        <!-- Fruits Shop Start-->
+        <div class="container-fluid fruite py-5" id="products">
+            <div class="container py-5">
+                <div class="tab-class text-center">
+                    <div class="row g-4">
+                        <div class="col-lg-4 text-start">
+                            <h1>Bizning organik mahsulotlarimiz</h1>
+                        </div>
+                        <div class="col-lg-8 text-end">
+                            <ul class="nav nav-pills d-inline-flex text-center mb-5">
+                                <li class="nav-item">
+                                    <a class="d-flex m-2 py-2 bg-light rounded-pill active" data-bs-toggle="pill" href="#tab-all">
+                                        <span class="text-dark" style="width: 130px;">Barchasi</span>
+                                    </a>
+                                </li>
+                                {% for category in categories %}
+                                <li class="nav-item">
+                                    <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-{{ category.slug }}">
+                                        <span class="text-dark" style="width: 130px;">{{ category.name }}</span>
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <!-- Barchasi -->
+                        <div id="tab-all" class="tab-pane fade show p-0 active">
+                            <div class="row g-4">
+                                {% for category, products in products_by_category.items %}
+                                    {% for product in products %}
+                                    <div class="col-md-6 col-lg-4 col-xl-3">
+                                        <div class="rounded position-relative fruite-item">
+                                            <div class="fruite-img">
+                                                <img src="{{ product.image.url }}" class="img-fluid w-100 rounded-top" alt="{{ product.name }}">
+                                            </div>
+                                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">{{ product.category.name }}</div>
+                                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                <h4>{{ product.name }}</h4>
+                                                <p>{{ product.description|truncatechars:100 }}</p>
+                                                <div class="d-flex justify-content-between flex-lg-wrap">
+                                                    <p class="text-dark fs-5 fw-bold mb-0">{{ product.price }}so'm/kg</p>
+                                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                        <i class="fa fa-eye me-2 text-primary"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Har bir kategoriya uchun alohida tab -->
+                        {% for category in categories %}
+                            <div id="tab-{{ category.slug }}" class="tab-pane fade show p-0">
+                                <div class="row g-4">
+                                    {% for cat_slug, product_list in products_by_category.items %}
+                                        {% if cat_slug == category.slug %}
+                                            {% for product in product_list %}
+                                                <div class="col-md-6 col-lg-4 col-xl-3">
+                                                    <!-- Mahsulot kartasi -->
+                                                    <div class="rounded position-relative fruite-item">
+                                                        <div class="fruite-img">
+                                                            <img src="{{ product.image.url }}" class="img-fluid w-100 rounded-top" alt="{{ product.name }}">
+                                                        </div>
+                                                        <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">{{ category.name }}</div>
+                                                        <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                            <h4>{{ product.name }}</h4>
+                                                            <p>{{ product.description|truncatechars:100 }}</p>
+                                                            <div class="d-flex justify-content-between flex-lg-wrap">
+                                                                <p class="text-dark fs-5 fw-bold mb-0">{{ product.price }} so'm</p>
+                                                                <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                                    <i class="fa fa-eye me-2 text-primary"></i>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+                </div>      
+            </div>
+        </div>
+        <!-- Fruits Shop End-->
+
+
+        <!-- Banner Section Start-->
+        <div class="container-fluid banner bg-secondary my-5">
+            <div class="container py-5">
+                <div class="row g-4 align-items-center">
+                    <div class="col-lg-6">
+                        <div class="py-4">
+                            <h1 class="display-3 text-white">Yangi ekzotik mevalar</h1>
+                            <p class="fw-normal display-3 text-dark mb-4">Bizning do'konimizda</p>
+                            <p class="mb-4 text-dark">Shunday qilib, yaratilgan Lorem Ipsum har doim takrorlanadigan hazil yoki xarakterli bo'lmagan so'zlardan xoli bo'ladi.</p>
+                            <a href="{% url 'make_order' %}" class="banner-btn btn border-2 border-white rounded-pill text-dark py-3 px-5">Sotib olish</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="position-relative">
+                            <img src="{% static 'img/baner-1.png' %}" class="img-fluid w-100 rounded" alt="">
+                            <div class="d-flex align-items-center justify-content-center bg-white rounded-circle position-absolute" style="width: 140px; height: 140px; top: 0; left: 0;">
+                                <h1 style="font-size: 100px;">1</h1>
+                                <div class="d-flex flex-column">
+                                    <span class="h2 mb-0">5000 so'm</span>
+                                    <span class="h4 text-muted mb-0">kg</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Banner Section End -->
+
+
+        <!-- Bestsaler Product Start -->
+        <div class="container-fluid py-5">
+            <div class="container py-5">
+                <div class="text-center mx-auto mb-5" style="max-width: 700px;">
+                    <h1 class="display-4">Eng ko'p sotilgan mahsulotlar</h1>
+                    <p>Quyidagi ro‘yxat foydalanuvchilar tomonidan eng ko‘p sotib olingan mahsulotlardan iborat.</p>
+                </div>
+                <div class="row g-4">
+                    {% for product in best_products %}
+                    <div class="col-lg-6 col-xl-4">
+                        <div class="p-4 rounded bg-light">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <img src="{{ product.image.url }}" class="img-fluid rounded-circle w-100" alt="{{ product.name }}">
+                                </div>
+                                <div class="col-6">
+                                    <a href="#" class="h5">{{ product.name }}</a>
+                                    <div class="d-flex my-3">
+                                        {{ product.category }}
+                                    </div>
+                                    <h4 class="mb-3">
+                                        {% if product.discount_price %}
+                                            {{ product.discount_price }} so‘m
+                                        {% else %}
+                                            {{ product.price }} so‘m
+                                        {% endif %}
+                                    </h4>
+                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                        <i class="fa fa-eye me-2 text-primary"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-center">Hozircha eng ko‘p sotilgan mahsulotlar mavjud emas.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Bestsaler Product End -->
+
+
+         <!-- Contact Start -->
+        <div class="container-fluid contact py-5" id="contact">
+            <div class="container py-5">
+                <div class="p-5 bg-light rounded">
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <div class="text-center mx-auto" style="max-width: 700px;">
+                                <h1 class="text-primary">Aloqa qiling</h1>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="h-100 rounded">
+                                <iframe class="rounded w-100" 
+                                style="height: 400px;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d233274.46191054903!2d66.86865804937565!3d39.63238044763071!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f4d191960077df7%3A0x487636d9d13f2f57!2sSamarqand%2C%20Samarqand%20viloyati%2C%20O%CA%BBzbekiston!5e1!3m2!1suz!2s!4v1747460521214!5m2!1suz!2s"
+                                loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <form action="" class="">
+                                <input type="text" class="w-100 form-control border-0 py-3 mb-4" placeholder="Sizning ismingiz">
+                                <input type="email" class="w-100 form-control border-0 py-3 mb-4" placeholder="Elektron pochtangizni kiriting">
+                                <textarea class="w-100 form-control border-0 mb-4" rows="5" cols="10" placeholder="Xabaringiz"></textarea>
+                                <button class="w-100 btn form-control border-secondary py-3 bg-white text-primary " type="submit">Yuborish</button>
+                            </form>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="d-flex p-4 rounded mb-4 bg-white">
+                                <i class="fas fa-map-marker-alt fa-2x text-primary me-4"></i>
+                                <div>
+                                    <h4>Manzil</h4>
+                                    <p class="mb-2">123 Street New York.USA</p>
+                                </div>
+                            </div>
+                            <div class="d-flex p-4 rounded mb-4 bg-white">
+                                <i class="fas fa-envelope fa-2x text-primary me-4"></i>
+                                <div>
+                                    <h4>Bizga xat yuboring</h4>
+                                    <p class="mb-2">info@example.com</p>
+                                </div>
+                            </div>
+                            <div class="d-flex p-4 rounded bg-white">
+                                <i class="fa fa-phone-alt fa-2x text-primary me-4"></i>
+                                <div>
+                                    <h4>Telefon</h4>
+                                    <p class="mb-2">(+012) 3456 7890</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Contact End -->
+
+    {% endblock content %}
