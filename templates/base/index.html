@@ -1,0 +1,446 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+
+<div class="container-fluid py-5 mb-5 hero-header" id="home">
+    <div class="container py-5">
+        <div class="row g-5 align-items-center flex-column-reverse flex-lg-row">
+            <div class="col-12 col-lg-7 text-center text-lg-start">
+                <h4 class="mb-3 text-secondary">{{ menu_text.organic_food }}</h4>
+                <h1 class="mb-5 display-5 display-lg-3 text-primary">{{ menu_text.dried_fruits }}</h1>
+                <div class="position-relative mx-auto mx-lg-0">
+                    <a href="#contact" class="banner-btn btn border-2 border-secondary rounded-pill text-dark py-3 px-5">{{ menu_text.send_message }}</a>
+                </div>
+            </div>
+            <div class="col-12 col-lg-5 mb-4 mb-lg-0 text-center">
+                <div class="position-relative" style="height: 100%;">
+                    <img src="{% static 'img/main-img.png' %}" 
+                         class="animate-updown img-fluid" 
+                         alt="First slide" 
+                         style="object-fit: contain; max-width: 100%; height: auto;">
+                </div>
+            </div>
+            <style>
+            @keyframes updown {
+                0% { transform: translateY(0); }
+                50% { transform: translateY(-30px); }
+                100% { transform: translateY(0); }
+            }
+            .animate-updown {
+                animation: updown 2s infinite;
+            }
+            @media (max-width: 576px) {
+                .hero-header h1 {
+                    font-size: 2rem !important;
+                }
+                .hero-header h4 {
+                    font-size: 1.1rem !important;
+                }
+            }
+            </style>
+        </div>
+    </div>
+</div>
+<!-- Hero End -->
+
+<!-- Fruits Shop Start-->
+<div class="container-fluid fruite py-5" id="products">
+    <div class="container py-5">
+        <div class="tab-class text-center">
+            <div class="row g-4">
+                <div class="col-12 col-lg-4 text-start text-center text-lg-start">
+                    <h1>{{ menu_text.our_products }}</h1>
+                </div>
+                <div class="col-12 col-lg-8 text-end text-center text-lg-end">
+                    <ul class="nav nav-pills d-inline-flex flex-wrap justify-content-center text-center mb-5">
+                        <li class="nav-item">
+                            <a class="d-flex m-2 py-2 bg-light rounded-pill active" data-bs-toggle="pill" href="#tab-all">
+                                <span class="text-dark" style="width: 130px;">{{ menu_text.all }}</span>
+                            </a>
+                        </li>
+                        {% for category in categories %}
+                        <li class="nav-item">
+                            <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-{{ category.slug }}">
+                                <span class="text-dark" style="width: 130px;">{{ category.translated_name }}</span>
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="tab-content">
+                <!-- Barchasi -->
+                <div id="tab-all" class="tab-pane fade show p-0 active">
+                    <div class="row g-4">
+                        {% for product in all_products %}
+                            <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                                <div class="rounded position-relative fruite-item h-100 d-flex flex-column">
+                                    <div class="fruite-img" style="height: 250px;">
+                                        <img src="{{ product.image.url }}" class="img-fluid w-100 rounded-top" alt="{{ product.get_name }}" style="object-fit: cover; height: 100%;">
+                                    </div>
+                                    <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;"> {{ product.category.translated_name }}</div>
+                                    <div class="p-4 border border-secondary border-top-0 rounded-bottom flex-grow-1 d-flex flex-column">
+                                        <h4>{{ product.name_trans }}</h4>
+                                        <p>{{ product.description_trans|truncatechars:100 }}</p>
+                                        <div class="d-flex justify-content-between flex-lg-wrap mt-auto">
+                                            <a href="{% url 'shop_detail' product.slug %}" class="btn border border-secondary rounded-pill px-3 text-primary mb-2 mb-lg-0">
+                                                <i class="fa fa-eye me-2 text-primary"></i> {{ menu_text.view }}
+                                            </a>
+                                            {% if product.files %}
+                                                <a href="{{ product.files.url }}" target="_blank" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                <i class ="fa fa-download me-2 text-primary"></i> {{ menu_text.details }}
+                                            </a>
+                                            {% else %}
+                                                <a href="" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                <i class ="fa fa-download me-2 text-primary"></i> {{ menu_text.details }}
+                                            </a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="pagination d-flex justify-content-center mt-4">
+                        {% if all_products.has_previous %}
+                            <a href="?page_all={{ all_products.previous_page_number }}#tab-all" class="rounded">&laquo;</a>
+                        {% else %}
+                            <a class="rounded disabled">&laquo;</a>
+                        {% endif %}
+
+                        {% for num in all_products.paginator.page_range %}
+                            {% if all_products.number == num %}
+                                <a href="?page_all={{ num }}#tab-all" class="active rounded">{{ num }}</a>
+                            {% else %}
+                                <a href="?page_all={{ num }}#tab-all" class="rounded">{{ num }}</a>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if all_products.has_next %}
+                            <a href="?page_all={{ all_products.next_page_number }}#tab-all" class="rounded">&raquo;</a>
+                        {% else %}
+                            <a class="rounded disabled">&raquo;</a>
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- Har bir kategoriya uchun alohida tab -->
+                {% for category in categories %}
+                    <div id="tab-{{ category.slug }}" class="tab-pane fade show p-0">
+                        <div class="row g-4">
+                             {% with product_list=products_by_category|dict_get:category.slug %}
+                                {% for product in product_list %}
+                                    <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                                        <div class="rounded position-relative fruite-item h-100 d-flex flex-column">
+                                            <div class="fruite-img" style="height: 250px;">
+                                                <img src="{{ product.image.url }}" class="img-fluid w-100 rounded-top" alt="{{ product.get_name }}" style="object-fit: cover; height: 100%;">
+                                            </div>
+                                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">{{ category.translated_name }}</div>
+                                            <div class="p-4 border border-secondary border-top-0 rounded-bottom flex-grow-1 d-flex flex-column">
+                                                <h4>{{ product.name_trans }}</h4>
+                                                <p>{{ product.description_trans|truncatechars:100 }}</p>
+                                                <div class="d-flex justify-content-between flex-lg-wrap mt-auto">
+                                                    <a href="{% url 'shop_detail' product.slug %}" class="btn border border-secondary rounded-pill px-3 text-primary mb-2 mb-lg-0">
+                                                        <i class="fa fa-eye me-2 text-primary"></i> {{ menu_text.view }}
+                                                    </a>
+                                                    {% if product.files %}
+                                                        <a href="{{ product.files.url }}" target="_blank" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                        <i class ="fa fa-download me-2 text-primary"></i> {{ menu_text.details }}
+                                                    </a>
+                                                    {% else %}
+                                                        <a href="" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                        <i class ="fa fa-download me-2 text-primary"></i> {{ menu_text.details }}
+                                                    </a>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <div class="pagination d-flex justify-content-center mt-4">
+                                    {% with products=products_by_category|dict_get:category.slug %}
+                                        {% if products.has_previous %}
+                                            <a href="?page_{{ category.slug }}={{ products.previous_page_number }}#tab-{{ category.slug }}" class="rounded">&laquo;</a>
+                                        {% else %}
+                                            <a class="rounded disabled">&laquo;</a>
+                                        {% endif %}
+
+                                        {% for num in products.paginator.page_range %}
+                                            {% if products.number == num %}
+                                                <a href="?page_{{ category.slug }}={{ num }}#tab-{{ category.slug }}" class="active rounded">{{ num }}</a>
+                                            {% else %}
+                                                <a href="?page_{{ category.slug }}={{ num }}#tab-{{ category.slug }}" class="rounded">{{ num }}</a>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        {% if products.has_next %}
+                                            <a href="?page_{{ category.slug }}={{ products.next_page_number }}#tab-{{ category.slug }}" class="rounded">&raquo;</a>
+                                        {% else %}
+                                            <a class="rounded disabled">&raquo;</a>
+                                        {% endif %}
+                                    {% endwith %}
+                                </div>
+                            {% endwith %}
+                        </div>
+                        
+                    </div>
+                {% endfor %}
+                
+            </div>
+            
+            
+
+
+        </div>      
+    </div>
+</div>
+<!-- Fruits Shop End-->
+
+<!-- Banner Section Start-->
+<div class="container-fluid banner bg-secondary my-5">
+    <div class="container py-5">
+        <div class="row g-4 align-items-center">
+            <div class="col-12 col-lg-6">
+                <div class="py-4 text-center text-lg-start">
+                    <h1 class="display-5 display-lg-3 text-white">{{ menu_text.new_exotic_fruits }}</h1>
+                    <p class="fw-normal display-6 text-dark mb-4">{{ menu_text.in_our_shop }}</p>
+                    <p class="mb-4 text-dark">{{ menu_text.produc_about }}</p>
+                    <a href="#contact" class="banner-btn btn border-2 border-white rounded-pill text-dark py-3 px-5">{{ menu_text.buy_now }}</a>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 text-center">
+                <div class="position-relative d-inline-block">
+                    <img src="{% static 'img/baner-1.png' %}" class="img-fluid w-100 rounded" alt="">
+                    <div class="d-flex align-items-center justify-content-center bg-white rounded-circle position-absolute" style="width: 100px; height: 100px; top: 10px; left: 10px;">
+                        <h1 style="font-size: 2.5rem;">1</h1>
+                        <div class="d-flex flex-column ms-2">
+                            <span class="h5 mb-0">5000 so'm</span>
+                            <span class="h6 text-muted mb-0">kg</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Banner Section End -->
+
+<!-- Gallery Section Start -->
+<div class="container-fluid py-5" id="gallary">
+    <div class="container py-5">
+        <div class="text-center mx-auto mb-5" style="max-width: 700px;">
+            <h1 class="display-4">{{ menu_text.gallery_title }}</h1>
+            <p>{{ menu_text.gallery_desc }}</p>
+        </div>
+        <div class="row g-4">
+            {% for gallar in gallery %}
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <img src="{{gallar.get_image_url}}" class="card-img-top gallery-img" alt="rasm" onclick="openModal(this)" style="height: 300px;">
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <style>
+        .gallery-img {
+            border-radius: 16px;
+            transition: transform 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.3s;
+            cursor: pointer;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+        .gallery-img:hover {
+            transform: scale(1.06);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            z-index: 2;
+        }
+        /* Modal styles */
+        .gallery-modal {
+            display: none;
+            position: fixed;
+            z-index: 1050;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: auto;
+            background: rgba(0,0,0,0.8);
+            align-items: center;
+            justify-content: center;
+        }
+        .gallery-modal.active {
+            display: flex;
+        }
+        .gallery-modal-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+            position: relative;
+            background: #fff;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .gallery-modal-content img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 16px;
+        }
+        .gallery-modal-close {
+            position: absolute;
+            top: 10px;
+            right: 18px;
+            font-size: 2rem;
+            color: #fff;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 2;
+        }
+        @media (max-width: 576px) {
+            .gallery-modal-content img {
+                max-width: 98vw;
+                max-height: 70vh;
+            }
+        }
+    </style>
+    <!-- Modal HTML -->
+    <div class="gallery-modal" id="galleryModal" onclick="closeModal(event)">
+        <div class="gallery-modal-content">
+            <button class="gallery-modal-close" onclick="closeModal(event)">&times;</button>
+            <img src="" alt="Gallery Image" id="galleryModalImg">
+        </div>
+    </div>
+    <script>
+        function openModal(img) {
+            var modal = document.getElementById('galleryModal');
+            var modalImg = document.getElementById('galleryModalImg');
+            modalImg.src = img.src;
+            modalImg.alt = img.alt;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal(event) {
+            // Only close if background or close button is clicked
+            if (event.target.classList.contains('gallery-modal') || event.target.classList.contains('gallery-modal-close')) {
+                document.getElementById('galleryModal').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+        // Optional: close modal on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "Escape") {
+                document.getElementById('galleryModal').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    </script>
+</div>
+<!-- Gallery Section End -->
+
+<!-- About Start -->
+<section class="py-5 bg-light position-relative" id="about">
+    <div class="container">
+        <h1 class="display-5 fw-bold text-center mb-3 text-success animate__animated animate__fadeInDown">{{ menu_text.about_us }}</h1>
+        <p class="lead text-center text-muted mb-5 animate__animated animate__fadeInUp">
+            {{ menu_text.about_text }}
+        </p>
+        <div class="row g-5">
+            <div class="col-12 col-lg-6">
+                <div class="p-4 bg-white shadow-sm rounded-3 h-100">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-seedling fa-2x text-success me-3"></i>
+                        <h4 class="mb-0">{{ menu_text.mission }}</h4>
+                    </div>
+                    <p class="text-muted">
+                        {{ menu_text.mission_text }}
+                    </p>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="p-4 bg-white shadow-sm rounded-3 h-100">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-users fa-2x text-primary me-3"></i>
+                        <h4 class="mb-0">{{ menu_text.team }}</h4>
+                    </div>
+                    <p class="text-muted">
+                        {{ menu_text.team_text }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5">
+            <img src="{% static 'img/about.png' %}" class="img-fluid rounded-3 shadow animate__animated animate__zoomIn" alt="Biz haqimizda rasm" style="max-width: 100%; height: auto;">
+        </div>
+    </div>
+</section>
+<!-- About End -->
+
+<!-- Contact Start -->
+<div class="container-fluid contact py-5" id="contact">
+    <div class="container py-5">
+        <div class="p-5 bg-light rounded">
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="text-center mx-auto" style="max-width: 700px;">
+                        <h1 class="text-primary">{{ menu_text.contact_us }}</h1>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="h-100 rounded">
+                        <iframe class="rounded w-100" 
+                        style="height: 300px; min-height: 200px;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d233274.46191054903!2d66.86865804937565!3d39.63238044763071!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f4d191960077df7%3A0x487636d9d13f2f57!2sSamarqand%2C%20Samarqand%20viloyati%2C%20O%CA%BBzbekiston!5e1!3m2!1suz!2s!4v1747460521214!5m2!1suz!2s"
+                        loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-7">
+                    <form method="post" action="/">
+                        {% csrf_token %}
+                        <input type="text" name="full_name" class="w-100 form-control border-0 py-3 mb-4" placeholder="{{ menu_text.your_name }}" required>
+                        <input type="email" name="email" class="w-100 form-control border-0 py-3 mb-4" placeholder="{{ menu_text.email }}" required>
+                        <input type="tel" name="phone" class="w-100 form-control border-0 py-3 mb-4" placeholder="{{ menu_text.phone }}" required>
+                        <textarea name="note" class="w-100 form-control border-0 mb-4" rows="5" cols="10" placeholder="{{ menu_text.message }}" required></textarea>
+                        <button type="submit" class="w-100 btn form-control border-secondary py-3 bg-white text-primary ">{{ menu_text.send }}</button>
+                    </form>
+                </div>
+                <div class="col-12 col-lg-5">
+                    <div class="d-flex p-4 rounded mb-4 bg-white">
+                        <i class="fas fa-map-marker-alt fa-2x text-primary me-4"></i>
+                        <div>
+                            <h4>{{ menu_text.address }}</h4>
+                            <p class="mb-2">123 Street New York.USA</p>
+                        </div>
+                    </div>
+                    <div class="d-flex p-4 rounded mb-4 bg-white">
+                        <i class="fas fa-envelope fa-2x text-primary me-4"></i>
+                        <div>
+                            <h4>{{ menu_text.email_us }}</h4>
+                            <p class="mb-2">info@example.com</p>
+                        </div>
+                    </div>
+                    <div class="d-flex p-4 rounded bg-white">
+                        <i class="fa fa-phone-alt fa-2x text-primary me-4"></i>
+                        <div>
+                            <h4>{{ menu_text.phone_title }}</h4>
+                            <p class="mb-2">(+012) 3456 7890</p>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-start pt-4">
+                        <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-instagram"></i></a>
+                        <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-telegram"></i></a>
+                        <a class="btn btn-outline-secondary btn-md-square rounded-circle" href=""><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Contact End -->
+
+{% endblock content %}

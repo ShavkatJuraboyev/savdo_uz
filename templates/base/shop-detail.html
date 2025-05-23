@@ -1,0 +1,76 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+       
+
+        <!-- Single Page Header start -->
+        <div class="container-fluid page-header py-5">
+            <h1 class="text-center text-white display-6">Shop Detail</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                <li class="breadcrumb-item active text-white">Shop Detail</li>
+            </ol>
+        </div>
+        <!-- Single Page Header End -->
+
+
+        <!-- Single Product Start -->
+        <div class="container-fluid py-5 mt-5">
+            <div class="container py-5">
+                <div class="row g-4 mb-5">
+                    <div class="col-lg-12 col-xl-12">
+                        <div class="row g-4">
+                            <div class="col-lg-6">
+                                <div class="border rounded">
+                                    <a href="#">
+                                        <img src="{{product.get_image_url}}" class="img-fluid rounded" alt="{{product.get_name}}">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <h4 class="fw-bold mb-3">{{product.name_trans}}</h4>
+                                <p class="mb-3">{{product.category.translated_name}}</p>
+                                <p class="mb-4">{{product.description_trans}}</p>
+                                <!-- <p class="mb-4">Susp endisse ultricies nisi vel quam suscipit. Sabertooth peacock flounder; chain pickerel hatchetfish, pencilfish snailfish</p> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h1 class="fw-bold mb-0">{{menu_text.related_products}}</h1>
+                <div class="vesitable">
+                    <div class="owl-carousel vegetable-carousel justify-content-center">
+                        {% for related_product in related_products %}
+                        <div class="border border-primary rounded position-relative vesitable-item">
+                            <div class="vesitable-img">
+                                <img src="{{related_product.get_image_url}}" class="img-fluid w-100 rounded-top" alt="{{related_product.category.translated_name}}" style="height: 250px;">
+                            </div>
+                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">{{related_product.category.translated_name}}</div>
+                            <div class="p-4 pb-0 rounded-bottom">
+                                <h4>{{related_product.name_trans}}</h4>
+                                <p>{{related_product.description_trans|truncatechars:100}}</p>
+                                <div class="d-flex justify-content-between flex-lg-wrap">
+                                    <a href="{% url 'shop_detail' related_product.slug %}" class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary">
+                                        <i class="fa fa-eye me-2 text-primary"></i> {{ menu_text.view }}
+                                    </a>
+                                    {% if related_product.files %}
+                                        <a href="{{ related_product.files.url }}" target="_blank" class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary">
+                                            <i class ="fa fa-download me-2 text-primary"></i> {{menu_text.details}}
+                                        </a>
+                                    {% else %}
+                                        <a href="" class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary">
+                                            <i class ="fa fa-download me-2 text-primary"></i> {{menu_text.details}}
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                         {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Single Product End -->
+    
+  {% endblock content %}
