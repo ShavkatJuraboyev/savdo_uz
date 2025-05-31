@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from ckeditor_uploader.fields import RichTextUploadingField 
 
 # Create your models here.
 
@@ -39,16 +40,17 @@ class Product(models.Model):
     name_uz = models.CharField(max_length=100, verbose_name=_('Maxsalat nomi (UZ)'))
     name_ru = models.CharField(max_length=100, verbose_name=_('Maxsalat nomi (RU)'), blank=True, null=True)
     name_en = models.CharField(max_length=100, verbose_name=_('Maxsalat nomi (EN)'), blank=True, null=True)
+
     slug = models.SlugField(max_length=100, unique=True, verbose_name=_('Maxsalat nomi slug'))
+
     description_uz = models.TextField(verbose_name=_('Maxsalat haqida (UZ)'), null=True, blank=True)
     description_ru = models.TextField(verbose_name=_('Maxsalat haqida (RU)'), null=True, blank=True)
     description_en = models.TextField(verbose_name=_('Maxsalat haqida (EN)'), null=True, blank=True)
-    ingredients_uz = models.TextField(verbose_name=_('Maxsalat tarkibi (UZ)'), null=True, blank=True)
-    ingredients_ru = models.TextField(verbose_name=_('Maxsalat tarkibi (RU)'), null=True, blank=True)
-    ingredients_en = models.TextField(verbose_name=_('Maxsalat tarkibi (EN)'), null=True, blank=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_('Maxsalat narxi'), null=True, blank=True)
-    discount_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name=_('Maxsalat chegirmali narxi'))
-    stock = models.IntegerField(verbose_name=_('Maxsalat miqdori'), null=True, blank=True)
+
+    content_uz = RichTextUploadingField(config_name='extends_uz', verbose_name="Sarlovha umumiy matini", null=True, blank=True)
+    content_en = RichTextUploadingField(config_name='extends_en', verbose_name="English sarlovha umumiy matini", null=True, blank=True)
+    content_ru = RichTextUploadingField(config_name='extends_ru', verbose_name="Ruscha sarlovha umumiy matini", null=True, blank=True)
+
     available = models.BooleanField(default=True, verbose_name=_('Maxsalat mavjudligi'))
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name=_('Maxsalat turi'))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Yaratilgan vaqti'))
@@ -80,8 +82,8 @@ class Product(models.Model):
     def get_description(self, language):
         return self.get_translation('description', language)
 
-    def get_ingredients(self, language):
-        return self.get_translation('ingredients', language)
+    def get_content(self, language):
+        return self.get_translation('content', language)
 
 class Order(models.Model):
     full_name = models.CharField(max_length=100, verbose_name=_("To‘liq ismi"))
@@ -113,3 +115,60 @@ class Gallery(models.Model):
     class Meta:
         verbose_name = _('Rasm')
         verbose_name_plural = _('Rasmlar')
+
+class Certificate(models.Model):
+    image = models.ImageField(upload_to='certificates/', verbose_name=_('Sertifikat rasmi'))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Yaratilgan vaqti'))
+
+    def __str__(self):
+        return f"Certificate {self.id}"
+
+    def get_image_url(self):
+        if self.image:
+            return self.image.url
+        return None
+    
+    class Meta:
+        verbose_name = _('Sertifikat')
+        verbose_name_plural = _('Sertifikatlar')
+
+
+class News(models.Model):
+    title_uz = models.CharField(max_length=200, verbose_name=_('Yangilik sarlavhasi (UZ)'))
+    title_ru = models.CharField(max_length=200, verbose_name=_('Yangilik sarlavhasi (RU)'), blank=True, null=True)
+    title_en = models.CharField(max_length=200, verbose_name=_('Yangilik sarlavhasi (EN)'), blank=True, null=True)
+
+    text_uz = models.TextField(verbose_name=_('Yangilik matni (UZ)'), null=True, blank=True)
+    text_ru = models.TextField(verbose_name=_('Yangilik matni (RU)'), null=True, blank=True)        
+    text_en = models.TextField(verbose_name=_('Yangilik matni (EN)'), null=True, blank=True)
+
+    # content_uz = RichTextUploadingField(config_name='extends_uz', verbose_name="Yangilik matni (UZ)", null=True, blank=True)
+    # content_en = RichTextUploadingField(config_name='extends_en', verbose_name="Yangilik matni (EN)", null=True, blank=True)
+    # content_ru = RichTextUploadingField(config_name='extends_ru', verbose_name="Yangilik matni (RU)", null=True, blank=True)
+
+    image = models.ImageField(upload_to='news/', verbose_name=_('Yangilik rasmi'), null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Yaratilgan vaqti'))
+
+    def __str__(self):
+        return self.title_uz
+
+    class Meta:
+        verbose_name_plural = _('Yangiliklar')
+        verbose_name = _('Yangilik')
+
+    def get_translation(self, field_name, language):
+        """Berilgan tilga mos tarjimani qaytaradi."""
+        language_suffix = f"_{language}"
+        translated_field = f"{field_name}{language_suffix}"
+        return getattr(self, translated_field, getattr(self, f"{field_name}_en", ''))
+
+    def get_title(self, language):
+        return self.get_translation('title', language)
+
+    def get_text(self, language):
+        return self.get_translation('text', language)
+    
+    def get_img(self):
+        if self.image:
+            return self.image.url
+        return None

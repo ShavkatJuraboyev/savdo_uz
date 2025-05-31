@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product, Order, Gallery
+from .models import Category, Product, Order, Gallery, Certificate, News
 # Register your models here.
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -32,26 +32,26 @@ class CategoryAdmin(admin.ModelAdmin):
         return True
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name_uz', 'name_en', 'name_ru', 'description_uz', 'ingredients_uz', 'price', 'discount_price', 'stock', 'available', 'category', 'created_at')
+    list_display = ('name_uz', 'name_en', 'name_ru', 'available', 'category', 'created_at')
     prepopulated_fields = {'slug': ('name_en',)}
     search_fields = ('name_uz',)
     list_filter = ('available', 'category')
     ordering = ('-created_at',)
     list_per_page = 10
-    list_editable = ('price', 'stock')
     fieldsets = (
+        ('Maxsulot haqida', {
+            'fields': ('category', 'image', 'files', 'available',  )
+        }),
         ('Uzbekcha ma\'lumot', {
-            'fields': ('name_uz', "description_uz", 'ingredients_uz')  
+            'fields': ('name_uz', "description_uz", 'content_uz')  
         }),
         ('Inglizcha ma\'lumot', {
-            'fields': ('name_en', "description_en", 'ingredients_en')  
+            'fields': ('name_en', "description_en", 'content_en')  
         }),
         ('Ruscha ma\'lumot', {
-            'fields': ('name_ru', "description_ru", 'ingredients_ru')  
+            'fields': ('name_ru', "description_ru", 'content_ru', 'slug', )  
         }),
-        ('Maxsulot haqida', {
-            'fields': ('slug', 'price', 'discount_price', 'stock', 'available', 'category', 'image', 'files')
-        }),
+        
     )   
     def has_add_permission(self, request):
         return True 
@@ -78,3 +78,5 @@ admin.site.register(Order, OrderAdmin)
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
+admin.site.register(Certificate)
+admin.site.register(News)

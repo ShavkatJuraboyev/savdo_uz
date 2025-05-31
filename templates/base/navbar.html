@@ -12,7 +12,7 @@
             <div class="container topbar bg-primary d-none d-lg-block">
                 <div class="d-flex justify-content-between">
                     <div class="top-info ps-2">
-                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">123 Street, New York</a></small>
+                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Dostlik district, dostlik, chinobod mfy, xalqlar doʻstligi street, 34</a></small>
                         <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">Email@Example.com</a></small>
                     </div>
                     <!-- <div class="top-link pe-2">
@@ -24,17 +24,18 @@
             </div>
             <div class="container px-0">
                 <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                    <a href="/" class="navbar-brand"><h1 class="text-primary display-6">Arnasoy-gold</h1></a>
+                    <a href="/" class="navbar-brand"><h1 class="text-primary display-6">Zamin Garden</h1></a>
                     <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                         <span class="fa fa-bars text-primary"></span>
                     </button>
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
-                            <a href="#home" class="nav-item nav-link {% if active_page == 'home' %}active{% endif %}">{{ menu_text.home }}</a>
-                            <a href="#products" class="nav-item nav-link {% if active_page == 'products' %}active{% endif %}">{{ menu_text.products }}</a>
-                            <a href="#gallary" class="nav-item nav-link {% if active_page == 'gallery' %}active{% endif %}">{{ menu_text.gallery }}</a>
-                            <a href="#about" class="nav-item nav-link {% if active_page == 'about' %}active{% endif %}">{{ menu_text.about }}</a>
-                            <a href="#contact" class="nav-item nav-link {% if active_page == 'contact' %}active{% endif %}">{{ menu_text.contact }}</a>    </div>
+                            <a href="{% url 'index' %}#home" class="nav-item nav-link {% if active_page == 'home' %}active{% endif %}">{{ menu_text.home }}</a>
+                            <a href="{% url 'index' %}#products" class="nav-item nav-link {% if active_page == 'products' %}active{% endif %}">{{ menu_text.products }}</a>
+                            <a href="{% url 'index' %}#gallary" class="nav-item nav-link {% if active_page == 'gallery' %}active{% endif %}">{{ menu_text.gallery }}</a>
+                            <a href="{% url 'index' %}#about" class="nav-item nav-link {% if active_page == 'about' %}active{% endif %}">{{ menu_text.about }}</a>
+                            <a href="{% url 'index' %}#contact" class="nav-item nav-link {% if active_page == 'contact' %}active{% endif %}">{{ menu_text.contact }}</a>    
+                        </div>    
                         <form method="get" action="{% url 'set_language' %}">
                             <select name="lang" class="form-select" style="width: 140px;" onchange="this.form.submit()">
                                 <option value="en" data-icon="{% static 'img/flag/eng.png' %}" {% if language == 'en' %}selected{% endif %}>English</option>

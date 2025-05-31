@@ -8,38 +8,34 @@
     <div class="container py-5">
         <div class="row g-5 align-items-center flex-column-reverse flex-lg-row">
             <div class="col-12 col-lg-7 text-center text-lg-start">
-                <h4 class="mb-3 text-secondary">{{ menu_text.organic_food }}</h4>
+                <h4 class="mb-3" style="color: rgb(24, 136, 71);">{{ menu_text.organic_food }}</h4>
                 <h1 class="mb-5 display-5 display-lg-3 text-primary">{{ menu_text.dried_fruits }}</h1>
                 <div class="position-relative mx-auto mx-lg-0">
                     <a href="#contact" class="banner-btn btn border-2 border-secondary rounded-pill text-dark py-3 px-5">{{ menu_text.send_message }}</a>
                 </div>
             </div>
-            <div class="col-12 col-lg-5 mb-4 mb-lg-0 text-center">
-                <div class="position-relative" style="height: 100%;">
-                    <img src="{% static 'img/main-img.png' %}" 
-                         class="animate-updown img-fluid" 
-                         alt="First slide" 
-                         style="object-fit: contain; max-width: 100%; height: auto;">
+            <div class="col-md-12 col-lg-5">
+                <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
+                    <div class="carousel-inner" role="listbox">
+                        <div class="carousel-item active rounded">
+                            <img src="{% static 'img/img1.png' %}" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide" style="min-height: 400px; width: 400;">
+                            <!-- <a href="#" class="btn px-4 py-2 text-white rounded">Fruites</a> -->
+                        </div>
+                        <div class="carousel-item rounded">
+                            <img src="{% static 'img/img2.png' %}" class="img-fluid w-100 h-100 rounded" alt="Second slide" style="min-height: 400px; width: 400;">
+                            <!-- <a href="#" class="btn px-4 py-2 text-white rounded">Vesitables</a> -->
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
             </div>
-            <style>
-            @keyframes updown {
-                0% { transform: translateY(0); }
-                50% { transform: translateY(-30px); }
-                100% { transform: translateY(0); }
-            }
-            .animate-updown {
-                animation: updown 2s infinite;
-            }
-            @media (max-width: 576px) {
-                .hero-header h1 {
-                    font-size: 2rem !important;
-                }
-                .hero-header h4 {
-                    font-size: 1.1rem !important;
-                }
-            }
-            </style>
         </div>
     </div>
 </div>
@@ -50,8 +46,11 @@
     <div class="container py-5">
         <div class="tab-class text-center">
             <div class="row g-4">
-                <div class="col-12 col-lg-4 text-start text-center text-lg-start">
-                    <h1>{{ menu_text.our_products }}</h1>
+                <div class="col-12 col-lg-4 text-start text-center text-lg-start d-flex align-items-center justify-content-between">
+                    <h1 class="mb-0">{{ menu_text.our_products }}</h1>
+                    <a href="" target="_blank" class="btn border border-secondary rounded-pill px-3 text-primary">
+                        <i class="fa fa-download me-2 text-primary"></i> {{ menu_text.catalogs }}
+                    </a>
                 </div>
                 <div class="col-12 col-lg-8 text-end text-center text-lg-end">
                     <ul class="nav nav-pills d-inline-flex flex-wrap justify-content-center text-center mb-5">
@@ -88,7 +87,7 @@
                                             <a href="{% url 'shop_detail' product.slug %}" class="btn border border-secondary rounded-pill px-3 text-primary mb-2 mb-lg-0">
                                                 <i class="fa fa-eye me-2 text-primary"></i> {{ menu_text.view }}
                                             </a>
-                                            {% if product.files %}
+                                            {% if product.all_files %}
                                                 <a href="{{ product.files.url }}" target="_blank" class="btn border border-secondary rounded-pill px-3 text-primary">
                                                 <i class ="fa fa-download me-2 text-primary"></i> {{ menu_text.details }}
                                             </a>
@@ -198,33 +197,43 @@
 <!-- Fruits Shop End-->
 
 <!-- Banner Section Start-->
-<div class="container-fluid banner bg-secondary my-5">
+<!-- <div class="container-fluid banner bg-secondary my-5">
     <div class="container py-5">
         <div class="row g-4 align-items-center">
             <div class="col-12 col-lg-6">
                 <div class="py-4 text-center text-lg-start">
                     <h1 class="display-5 display-lg-3 text-white">{{ menu_text.new_exotic_fruits }}</h1>
-                    <p class="fw-normal display-6 text-dark mb-4">{{ menu_text.in_our_shop }}</p>
-                    <p class="mb-4 text-dark">{{ menu_text.produc_about }}</p>
+                    <p class="fw-normal display-6 text-dark mb-4">{{news.title}}</p>
+                    <p class="mb-4 text-dark">{{news.text}}</p>
                     <a href="#contact" class="banner-btn btn border-2 border-white rounded-pill text-dark py-3 px-5">{{ menu_text.buy_now }}</a>
                 </div>
             </div>
             <div class="col-12 col-lg-6 text-center">
                 <div class="position-relative d-inline-block">
-                    <img src="{% static 'img/baner-1.png' %}" class="img-fluid w-100 rounded" alt="">
-                    <div class="d-flex align-items-center justify-content-center bg-white rounded-circle position-absolute" style="width: 100px; height: 100px; top: 10px; left: 10px;">
-                        <h1 style="font-size: 2.5rem;">1</h1>
-                        <div class="d-flex flex-column ms-2">
-                            <span class="h5 mb-0">5000 so'm</span>
-                            <span class="h6 text-muted mb-0">kg</span>
-                        </div>
-                    </div>
+                    <img src="{{news.get_img}}" class="img-fluid w-100 rounded" alt="">
                 </div>
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <!-- Banner Section End -->
+
+<!-- <div class="container my-5">
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <h5 class="text-center">Video 1</h5>
+            <div class="ratio ratio-16x9">
+                <iframe src="https://www.youtube.com/embed/KBYjHnmbEfA" title="YouTube video" allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <h5 class="text-center">Video 2</h5>
+            <div class="ratio ratio-16x9">
+                <iframe src="https://www.youtube.com/embed/HEjDV2_jeos" title="YouTube video" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+</div> -->
 
 <!-- Gallery Section Start -->
 <div class="container-fluid py-5" id="gallary">
@@ -237,7 +246,7 @@
             {% for gallar in gallery %}
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="card border-0 shadow-sm h-100">
-                    <img src="{{gallar.get_image_url}}" class="card-img-top gallery-img" alt="rasm" onclick="openModal(this)" style="height: 300px;">
+                    <img src="{{gallar.get_image_url}}" class="card-img-top gallery-img" alt="rasm" onclick="openModal(this)" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
             </div>
             {% endfor %}
@@ -343,43 +352,201 @@
 </div>
 <!-- Gallery Section End -->
 
-<!-- About Start -->
+<!-- About Start --> 
 <section class="py-5 bg-light position-relative" id="about">
-    <div class="container">
-        <h1 class="display-5 fw-bold text-center mb-3 text-success animate__animated animate__fadeInDown">{{ menu_text.about_us }}</h1>
-        <p class="lead text-center text-muted mb-5 animate__animated animate__fadeInUp">
-            {{ menu_text.about_text }}
-        </p>
-        <div class="row g-5">
-            <div class="col-12 col-lg-6">
-                <div class="p-4 bg-white shadow-sm rounded-3 h-100">
-                    <div class="d-flex align-items-center mb-3">
-                        <i class="fas fa-seedling fa-2x text-success me-3"></i>
-                        <h4 class="mb-0">{{ menu_text.mission }}</h4>
-                    </div>
-                    <p class="text-muted">
-                        {{ menu_text.mission_text }}
-                    </p>
-                </div>
-            </div>
-            <div class="col-12 col-lg-6">
-                <div class="p-4 bg-white shadow-sm rounded-3 h-100">
-                    <div class="d-flex align-items-center mb-3">
-                        <i class="fas fa-users fa-2x text-primary me-3"></i>
-                        <h4 class="mb-0">{{ menu_text.team }}</h4>
-                    </div>
-                    <p class="text-muted">
-                        {{ menu_text.team_text }}
-                    </p>
-                </div>
-            </div>
+  <div class="container py-5">
+    <h1 class="display-5 fw-bold text-center mb-3 text-success animate__animated animate__fadeInDown">
+      {{ menu_text.about_us }}
+    </h1>
+    <p class="lead text-center text-muted mb-5 animate__animated animate__fadeInUp">
+      {{ menu_text.about_text }}
+    </p>
+
+    <div class="row g-4">
+      <div class="col-12 col-lg-6">
+        <div class="p-4 bg-white shadow rounded-4 h-100">
+          <div class="d-flex align-items-center mb-3">
+            <i class="fas fa-seedling fa-2x text-success me-3"></i>
+            <h4 class="mb-0">{{ menu_text.mission }}</h4>
+          </div>
+          <p class="text-muted">{{ menu_text.mission_text }}</p>
         </div>
-        <div class="text-center mt-5">
-            <img src="{% static 'img/about.png' %}" class="img-fluid rounded-3 shadow animate__animated animate__zoomIn" alt="Biz haqimizda rasm" style="max-width: 100%; height: auto;">
+      </div>
+      <div class="col-12 col-lg-6">
+        <div class="p-4 bg-white shadow rounded-4 h-100">
+          <div class="d-flex align-items-center mb-3">
+            <i class="fas fa-users fa-2x text-primary me-3"></i>
+            <h4 class="mb-0">{{ menu_text.team }}</h4>
+          </div>
+          <p class="text-muted">{{ menu_text.team_text }}</p>
         </div>
+      </div>
     </div>
+
+    <div class="row mt-5 g-4">
+      <div class="col-md-6">
+        <div class="card shadow border-0 h-100 hover-up rounded-4 overflow-hidden">
+          <div class="card-img-container card">
+            <img src="{% static 'img/about1.png' %}" alt="Person 1" class="w-100 h-auto rounded-top-4">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title">Ismi Familiyasi</h5>
+            <p class="card-text">Bu yerda shaxs haqida qisqacha ma'lumot bo'ladi.</p>
+            <p class="card-text"><i class="fas fa-phone-alt me-2"></i>+998 90 123 45 67</p>
+            <p class="card-text"><i class="fas fa-envelope me-2"></i>person1@example.com</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card shadow border-0 h-100 hover-up rounded-4 overflow-hidden">
+          <div class="card-img-container card">
+            <img src="{% static 'img/about2.png' %}" alt="Person 2" class="w-100 h-auto rounded-top-4">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title">Ismi Familiyasi</h5>
+            <p class="card-text">Bu yerda shaxs haqida qisqacha ma'lumot bo'ladi.</p>
+            <p class="card-text"><i class="fas fa-phone-alt me-2"></i>+998 91 987 65 43</p>
+            <p class="card-text"><i class="fas fa-envelope me-2"></i>person2@example.com</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+        .card img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+      .card-img-container {
+        width: 100%;
+        height: auto;
+      }
+
+      .hover-up {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .hover-up:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+      }
+
+      .card-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #222;
+      }
+
+      .card-text {
+        font-size: 1rem;
+        color: #555;
+      }
+    </style>
+
+  </div>
 </section>
 <!-- About End -->
+
+
+ <!-- <div class="container-fluid py-5 mt-5">
+     <div class="container py-5">
+         <h1 class="fw-bold mb-0 ">{{menu_text.about_certificates}}</h1>
+         <div class="vesitable">
+             <div class="owl-carousel vegetable-carousel justify-content-center">
+                {% for certificate in certificates %}
+                    <div class="border border-primary rounded position-relative vesitable-item">
+                        <div class="vesitable-img">
+                            <img src="{{ certificate.get_image_url}}" class="img-fluid w-100 rounded-top" alt="{{certificate.id}}" style="width: 100%; height: 100%; object-fit: cover;" onclick="openCertificateModal(this)">
+                        </div>
+                    </div>
+                 {% endfor %}
+        <div class="certificate-modal" id="certificateModal" onclick="closeCertificateModal(event)">
+            <div class="certificate-modal-content">
+            <button class="certificate-modal-close" onclick="closeCertificateModal(event)">&times;</button>
+            <img src="" alt="Certificate Image" id="certificateModalImg">
+            </div>
+        </div>
+
+        <style>
+            .certificate-img {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            }
+            .certificate-img:hover {
+            transform: scale(1.05);
+            }
+            .certificate-modal {
+            display: none;
+            position: fixed;
+            z-index: 1050;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            align-items: center;
+            justify-content: center;
+            }
+            .certificate-modal.active {
+            display: flex;
+            }
+            .certificate-modal-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 16px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            }
+            .certificate-modal-content img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 16px;
+            }
+            .certificate-modal-close {
+            position: absolute;
+            top: 10px;
+            right: 18px;
+            font-size: 2rem;
+            color: #fff;
+            background: none;
+            border: none;
+            cursor: pointer;
+            }
+        </style>
+
+        <script>
+            function openCertificateModal(img) {
+            var modal = document.getElementById('certificateModal');
+            var modalImg = document.getElementById('certificateModalImg');
+            modalImg.src = img.src;
+            modalImg.alt = img.alt;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            }
+            function closeCertificateModal(event) {
+            if (event.target.classList.contains('certificate-modal') || event.target.classList.contains('certificate-modal-close')) {
+                document.getElementById('certificateModal').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            }
+            document.addEventListener('keydown', function(e) {
+            if (e.key === "Escape") {
+                document.getElementById('certificateModal').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            });
+        </script>
+             </div>
+         </div>
+     </div>
+ </div> -->
 
 <!-- Contact Start -->
 <div class="container-fluid contact py-5" id="contact">
@@ -413,7 +580,7 @@
                         <i class="fas fa-map-marker-alt fa-2x text-primary me-4"></i>
                         <div>
                             <h4>{{ menu_text.address }}</h4>
-                            <p class="mb-2">123 Street New York.USA</p>
+                            <p class="mb-2"> Dostlik district, dostlik, chinobod mfy, xalqlar doʻstligi street, 34</p>
                         </div>
                     </div>
                     <div class="d-flex p-4 rounded mb-4 bg-white">
@@ -427,14 +594,16 @@
                         <i class="fa fa-phone-alt fa-2x text-primary me-4"></i>
                         <div>
                             <h4>{{ menu_text.phone_title }}</h4>
-                            <p class="mb-2">(+012) 3456 7890</p>
+                            <a href="https://wa.me/qr/YTHILTE4J3YJH1" target="_blank"> <p class="mb-2">+998996112220</p></a>
+                           
                         </div>
                     </div>
                     <div class="d-flex justify-content-start pt-4">
                         <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-instagram"></i></a>
                         <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-facebook-f"></i></a>
                         <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-telegram"></i></a>
-                        <a class="btn btn-outline-secondary btn-md-square rounded-circle" href=""><i class="fab fa-whatsapp"></i></a>
+                        <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href="https://wa.me/qr/YTHILTE4J3YJH1"><i class="fab fa-whatsapp"></i></a>
+                        <a class="btn btn-outline-secondary btn-md-square rounded-circle" href=""><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
             </div>

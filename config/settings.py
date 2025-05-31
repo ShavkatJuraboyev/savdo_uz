@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'savdo',
+    'ckeditor',
+     'ckeditor_uploader',
 ]
 
 MIDDLEWARE = [
@@ -125,7 +127,37 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_IMAGE_BACKEND = "pillow"
+
+CKEDITOR_CONFIGS = {
+    'extends_uz': {
+        'toolbar': 'full',
+        'height': 600,
+        'width': 1000,
+    },
+    'extends_en': {
+        'toolbar': 'full',
+        'height': 600,
+        'width': 1000,
+    },
+    'extends_ru': {
+        'toolbar': 'full',
+        'height': 600,
+        'width': 1000,
+    },
+}
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# settings.py
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'devpysh@gmail.com'  # adminning gmaili
+EMAIL_HOST_PASSWORD = 'mlqp mmja ummc zplr'  # Gmail'dan olingan "App Password"
