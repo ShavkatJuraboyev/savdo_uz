@@ -23,11 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-zyxo$duf=kouv7^@*7cg1ykzm((l+-jsh)-1a+8bo+ff!#(a=9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "zamingarden.uz", "www.zamingarden.uz", "185.191.141.225"]
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 
 # Application definition
@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'savdo',
     'ckeditor',
-     'ckeditor_uploader',
+    'ckeditor_uploader',
 ]
 
 MIDDLEWARE = [
@@ -124,7 +124,7 @@ STATIC_URL = 'static/'
 #     BASE_DIR / 'static',
 # ]
 import os
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
