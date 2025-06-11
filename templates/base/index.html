@@ -18,11 +18,11 @@
                 <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
                     <div class="carousel-inner" role="listbox">
                         <div class="carousel-item active rounded">
-                            <img src="{% static 'img/img1.png' %}" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide" style="min-height: 400px; width: 400;">
+                            <img src="{% static 'img/1.jpg' %}" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide" style="min-height: 400px; width: 400;">
                             <!-- <a href="#" class="btn px-4 py-2 text-white rounded">Fruites</a> -->
                         </div>
                         <div class="carousel-item rounded">
-                            <img src="{% static 'img/img2.png' %}" class="img-fluid w-100 h-100 rounded" alt="Second slide" style="min-height: 400px; width: 400;">
+                            <img src="{% static 'img/2.jpg' %}" class="img-fluid w-100 h-100 rounded" alt="Second slide" style="min-height: 400px; width: 400;">
                             <!-- <a href="#" class="btn px-4 py-2 text-white rounded">Vesitables</a> -->
                         </div>
                     </div>
@@ -390,10 +390,10 @@
             <img src="{% static 'img/about1.png' %}" alt="Person 1" class="w-100 h-auto rounded-top-4">
           </div>
           <div class="card-body text-center">
-            <h5 class="card-title">Ismi Familiyasi</h5>
-            <p class="card-text">Bu yerda shaxs haqida qisqacha ma'lumot bo'ladi.</p>
-            <p class="card-text"><i class="fas fa-phone-alt me-2"></i>+998 90 123 45 67</p>
-            <p class="card-text"><i class="fas fa-envelope me-2"></i>person1@example.com</p>
+            <h5 class="card-title">Tursunov Yorqin</h5>
+            <p class="card-text">{{menu_text.director}}</p>
+            <!-- <p class="card-text"><i class="fas fa-phone-alt me-2"></i>+998 90 123 45 67</p> -->
+            <!-- <p class="card-text"><i class="fas fa-envelope me-2"></i>person1@example.com</p> -->
           </div>
         </div>
       </div>
@@ -404,10 +404,10 @@
             <img src="{% static 'img/about2.png' %}" alt="Person 2" class="w-100 h-auto rounded-top-4">
           </div>
           <div class="card-body text-center">
-            <h5 class="card-title">Ismi Familiyasi</h5>
-            <p class="card-text">Bu yerda shaxs haqida qisqacha ma'lumot bo'ladi.</p>
-            <p class="card-text"><i class="fas fa-phone-alt me-2"></i>+998 91 987 65 43</p>
-            <p class="card-text"><i class="fas fa-envelope me-2"></i>person2@example.com</p>
+            <h5 class="card-title">Sherkulov Sanjar</h5>
+            <p class="card-text">{{menu_text.export_manager}}</p>
+            <!-- <p class="card-text"><i class="fas fa-phone-alt me-2"></i>+998 91 987 65 43</p> -->
+            <!-- <p class="card-text"><i class="fas fa-envelope me-2"></i>person2@example.com</p> -->
           </div>
         </div>
       </div>
@@ -580,7 +580,7 @@
                         <i class="fas fa-map-marker-alt fa-2x text-primary me-4"></i>
                         <div>
                             <h4>{{ menu_text.address }}</h4>
-                            <p class="mb-2"> Dostlik district, dostlik, chinobod mfy, xalqlar doʻstligi street, 34</p>
+                            <p class="mb-2"> Дустлик, Чинабад, Халклар дустлиги улица, 34</p>
                         </div>
                     </div>
                     <div class="d-flex p-4 rounded mb-4 bg-white">
