@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-zyxo$duf=kouv7^@*7cg1ykzm((l+-jsh)-1a+8bo+ff!#(a=9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "zamingarden.uz", "www.zamingarden.uz", "185.191.141.225"]
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 
