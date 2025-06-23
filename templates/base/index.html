@@ -8,8 +8,8 @@
     <div class="container py-5">
         <div class="row g-5 align-items-center flex-column-reverse flex-lg-row">
             <div class="col-12 col-lg-7 text-center text-lg-start">
-                <h4 class="mb-3" style="color: rgb(24, 136, 71);">{{ menu_text.organic_food }}</h4>
-                <h1 class="mb-5 display-5 display-lg-3 text-primary">{{ menu_text.dried_fruits }}</h1>
+                <h4 class="mb-3 text-success">{{ menu_text.organic_food }}</h4>
+                <h1 class="mb-5 display-5 display-lg-3 text-success">{{ menu_text.dried_fruits }}</h1>
                 <div class="position-relative mx-auto mx-lg-0">
                     <a href="#contact" class="banner-btn btn border-2 border-secondary rounded-pill text-dark py-3 px-5">{{ menu_text.send_message }}</a>
                 </div>
@@ -48,8 +48,8 @@
             <div class="row g-4">
                 <div class="col-12 col-lg-4 text-start text-center text-lg-start d-flex align-items-center justify-content-between">
                     <h1 class="mb-0">{{ menu_text.our_products }}</h1>
-                    <a href="" target="_blank" class="btn border border-secondary rounded-pill px-3 text-primary">
-                        <i class="fa fa-download me-2 text-primary"></i> {{ menu_text.catalogs }}
+                    <a href="" target="_blank" class="btn border border-secondary rounded-pill px-3 text-success">
+                        <i class="fa fa-download me-2 text-success"></i> {{ menu_text.catalogs }}
                     </a>
                 </div>
                 <div class="col-12 col-lg-8 text-end text-center text-lg-end">
@@ -84,16 +84,16 @@
                                         <h4>{{ product.name_trans }}</h4>
                                         <p>{{ product.description_trans|truncatechars:100 }}</p>
                                         <div class="d-flex justify-content-between flex-lg-wrap mt-auto">
-                                            <a href="{% url 'shop_detail' product.slug %}" class="btn border border-secondary rounded-pill px-3 text-primary mb-2 mb-lg-0">
-                                                <i class="fa fa-eye me-2 text-primary"></i> {{ menu_text.view }}
+                                            <a href="{% url 'shop_detail' product.slug %}" class="btn border border-secondary rounded-pill px-3 text-success mb-2 mb-lg-0">
+                                                <i class="fa fa-eye me-2 text-success"></i> {{ menu_text.view }}
                                             </a>
                                             {% if product.all_files %}
-                                                <a href="{{ product.files.url }}" target="_blank" class="btn border border-secondary rounded-pill px-3 text-primary">
-                                                <i class ="fa fa-download me-2 text-primary"></i> {{ menu_text.details }}
+                                                <a href="{{ product.files.url }}" target="_blank" class="btn border border-secondary rounded-pill px-3 text-success">
+                                                <i class ="fa fa-download me-2 text-success"></i> {{ menu_text.details }}
                                             </a>
                                             {% else %}
-                                                <a href="" class="btn border border-secondary rounded-pill px-3 text-primary">
-                                                <i class ="fa fa-download me-2 text-primary"></i> {{ menu_text.details }}
+                                                <a href="" class="btn border border-secondary rounded-pill px-3 text-success">
+                                                <i class ="fa fa-download me-2 text-success"></i> {{ menu_text.details }}
                                             </a>
                                             {% endif %}
                                         </div>
@@ -140,16 +140,16 @@
                                                 <h4>{{ product.name_trans }}</h4>
                                                 <p>{{ product.description_trans|truncatechars:100 }}</p>
                                                 <div class="d-flex justify-content-between flex-lg-wrap mt-auto">
-                                                    <a href="{% url 'shop_detail' product.slug %}" class="btn border border-secondary rounded-pill px-3 text-primary mb-2 mb-lg-0">
-                                                        <i class="fa fa-eye me-2 text-primary"></i> {{ menu_text.view }}
+                                                    <a href="{% url 'shop_detail' product.slug %}" class="btn border border-secondary rounded-pill px-3 text-success mb-2 mb-lg-0">
+                                                        <i class="fa fa-eye me-2 text-success"></i> {{ menu_text.view }}
                                                     </a>
                                                     {% if product.files %}
-                                                        <a href="{{ product.files.url }}" target="_blank" class="btn border border-secondary rounded-pill px-3 text-primary">
-                                                        <i class ="fa fa-download me-2 text-primary"></i> {{ menu_text.details }}
+                                                        <a href="{{ product.files.url }}" target="_blank" class="btn border border-secondary rounded-pill px-3 text-success">
+                                                        <i class ="fa fa-download me-2 text-success"></i> {{ menu_text.details }}
                                                     </a>
                                                     {% else %}
-                                                        <a href="" class="btn border border-secondary rounded-pill px-3 text-primary">
-                                                        <i class ="fa fa-download me-2 text-primary"></i> {{ menu_text.details }}
+                                                        <a href="" class="btn border border-secondary rounded-pill px-3 text-success">
+                                                        <i class ="fa fa-download me-2 text-success"></i> {{ menu_text.details }}
                                                     </a>
                                                     {% endif %}
                                                 </div>
@@ -375,7 +375,7 @@
       <div class="col-12 col-lg-6">
         <div class="p-4 bg-white shadow rounded-4 h-100">
           <div class="d-flex align-items-center mb-3">
-            <i class="fas fa-users fa-2x text-primary me-3"></i>
+            <i class="fas fa-users fa-2x text-success me-3"></i>
             <h4 class="mb-0">{{ menu_text.team }}</h4>
           </div>
           <p class="text-muted">{{ menu_text.team_text }}</p>
@@ -555,7 +555,7 @@
             <div class="row g-4">
                 <div class="col-12">
                     <div class="text-center mx-auto" style="max-width: 700px;">
-                        <h1 class="text-primary">{{ menu_text.contact_us }}</h1>
+                        <h1 class="text-success">{{ menu_text.contact_us }}</h1>
                     </div>
                 </div>
                 <div class="col-12">
@@ -572,26 +572,26 @@
                         <input type="email" name="email" class="w-100 form-control border-0 py-3 mb-4" placeholder="{{ menu_text.email }}" required>
                         <input type="tel" name="phone" class="w-100 form-control border-0 py-3 mb-4" placeholder="{{ menu_text.phone }}" required>
                         <textarea name="note" class="w-100 form-control border-0 mb-4" rows="5" cols="10" placeholder="{{ menu_text.message }}" required></textarea>
-                        <button type="submit" class="w-100 btn form-control border-secondary py-3 bg-white text-primary ">{{ menu_text.send }}</button>
+                        <button type="submit" class="w-100 btn form-control border-secondary py-3 bg-white text-success ">{{ menu_text.send }}</button>
                     </form>
                 </div>
                 <div class="col-12 col-lg-5">
                     <div class="d-flex p-4 rounded mb-4 bg-white">
-                        <i class="fas fa-map-marker-alt fa-2x text-primary me-4"></i>
+                        <i class="fas fa-map-marker-alt fa-2x text-success me-4"></i>
                         <div>
                             <h4>{{ menu_text.address }}</h4>
                             <p class="mb-2"> Дустлик, Чинабад, Халклар дустлиги улица, 34</p>
                         </div>
                     </div>
                     <div class="d-flex p-4 rounded mb-4 bg-white">
-                        <i class="fas fa-envelope fa-2x text-primary me-4"></i>
+                        <i class="fas fa-envelope fa-2x text-success me-4"></i>
                         <div>
                             <h4>{{ menu_text.email_us }}</h4>
                             <p class="mb-2">info@example.com</p>
                         </div>
                     </div>
                     <div class="d-flex p-4 rounded bg-white">
-                        <i class="fa fa-phone-alt fa-2x text-primary me-4"></i>
+                        <i class="fa fa-phone-alt fa-2x text-success me-4"></i>
                         <div>
                             <h4>{{ menu_text.phone_title }}</h4>
                             <a href="https://wa.me/qr/YTHILTE4J3YJH1" target="_blank"> <p class="mb-2">+998996112220</p></a>
