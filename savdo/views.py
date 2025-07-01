@@ -12,9 +12,8 @@ def set_language(request):
     language = request.GET.get('lang', 'en')
     activate(language)
     request.session['django_language'] = language
-    response = redirect(request.META.get("HTTP_REFERER", '/'))
-    response.set_cookie('django_language', language)
-    return response
+    return redirect(request.META.get("HTTP_REFERER", '/'))
+
 
 @csrf_exempt
 def index(request):
