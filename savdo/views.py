@@ -6,13 +6,14 @@ from savdo.translations import TRANSLATIONS
 from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
-
+from django.utils.translation import get_language
 
 def set_language(request):
     language = request.GET.get('lang', 'en')
     activate(language)
-    request.session['django_language'] = language
-    return redirect(request.META.get("HTTP_REFERER", '/'))
+    response = redirect(request.META.get("HTTP_REFERER", '/'))
+    response.set_cookie('django_language', language)
+    return response
 
 
 @csrf_exempt
@@ -80,7 +81,7 @@ def index(request):
     # Sertifikatlar
     certificates = Certificate.objects.all()[:9]  # So‘nggi 10 ta sertifikatni olish
     # Sertifikatlar
-    language = request.session.get('django_language', 'en')
+    language = get_language()
     categories = Category.objects.all()
     products_by_category = {}
 
@@ -130,7 +131,7 @@ def index(request):
 
 
 def shop_detail(request, slug):
-    language = request.session.get('django_language', 'en')
+    language = get_language()
     product = get_object_or_404(Product, slug=slug)
     menu_text = TRANSLATIONS['menu'].get(language, TRANSLATIONS['menu']['en'])
     
