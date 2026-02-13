@@ -1,172 +1,186 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.utils.translation import activate
+from django.utils.translation import activate, get_language
+from django.core.paginator import Paginator
+from django.core.mail import send_mail
+
 from savdo.models import Category, Product, Order, Gallery, Certificate, News
 from savdo.translations import TRANSLATIONS
-from django.core.paginator import Paginator
-from django.views.decorators.csrf import csrf_exempt
-from django.core.mail import send_mail
-from django.utils.translation import get_language
+
 
 def set_language(request):
-    language = request.GET.get('lang', 'en')
+    language = request.GET.get("lang", "en")
     activate(language)
-    response = redirect(request.META.get("HTTP_REFERER", '/'))
-    response.set_cookie('django_language', language)
+    response = redirect(request.META.get("HTTP_REFERER", "/"))
+    response.set_cookie("django_language", language)
     return response
 
 
-@csrf_exempt
 def index(request):
+    # =========================
+    # CONTACT FORM
+    # =========================
     if request.method == "POST":
         full_name = request.POST.get("full_name")
         email = request.POST.get("email")
         phone = request.POST.get("phone")
         note = request.POST.get("note")
 
-        subject = "Yangi Murojaat"
-        message = f"""
-            <html>
-                <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
-                    <div style="max-width: 600px; margin: 30px auto; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
-                    
-                    <div style="background: linear-gradient(135deg, #3498db, #8e44ad); color: white; padding: 20px 30px; text-align: center;">
-                        <h2 style="margin: 0;">📩 Yangi murojaat tafsilotlari</h2>
-                    </div>
-
-                    <div style="padding: 30px;">
-                        <table style="width: 100%; border-collapse: collapse;">
-                        <tr>
-                            <td style="padding: 12px 0; font-weight: bold; color: #555;">👤 Ism:</td>
-                            <td style="padding: 12px 0; color: #333;">{full_name}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 12px 0; font-weight: bold; color: #555;">📧 Email:</td>
-                            <td style="padding: 12px 0; color: #333;">{email}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 12px 0; font-weight: bold; color: #555;">📱 Telefon:</td>
-                            <td style="padding: 12px 0; color: #333;">{phone}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 12px 0; font-weight: bold; color: #555;">📝 Xabar:</td>
-                            <td style="padding: 12px 0; color: #333;">{note}</td>
-                        </tr>
-                        </table>
-                    </div>
-
-                    <div style="background-color: #f0f0f0; padding: 15px 30px; text-align: center; color: #888; font-size: 13px;">
-                        Ushbu xabar sizning sayt orqali yuborildi.
-                    </div>
-                    </div>
-                </body>
-            </html>
-        """
-        admin_email = 'devpysh@gmail.com'
-        send_mail(subject, '', email, [admin_email], html_message=message)
-
-        if all([full_name, email, phone]):
+        if full_name and email and phone:
             Order.objects.create(
                 full_name=full_name,
                 email=email,
                 phone=phone,
-                note=note
+                note=note,
             )
-            messages.success(request, "Xabaringiz muvaffaqiyatli qabul qilindi!")
+
+            # Email yuborish
+            subject = "Yangi murojaat"
+            html_message = f"""
+                <h2>Yangi murojaat</h2>
+                <p><b>Ism:</b> {full_name}</p>
+                <p><b>Email:</b> {email}</p>
+                <p><b>Telefon:</b> {phone}</p>
+                <p><b>Xabar:</b> {note}</p>
+            """
+
+            send_mail(
+                subject,
+                "",
+                "no-reply@yourdomain.com",  # from_email
+                ["devpysh@gmail.com"],
+                html_message=html_message,
+            )
+
+            messages.success(request, "Xabaringiz muvaffaqiyatli yuborildi!")
             return redirect("index")
+
         else:
-            messages.error(request, "Iltimos, barcha majburiy maydonlarni to‘ldiring.")
-    
-    gallery = Gallery.objects.all()[:9]  # So‘nggi 10 ta rasmni olish
-    # Sertifikatlar
-    certificates = Certificate.objects.all()[:9]  # So‘nggi 10 ta sertifikatni olish
-    # Sertifikatlar
+            messages.error(request, "Iltimos barcha majburiy maydonlarni to‘ldiring.")
+
+    # =========================
+    # PRODUCTS
+    # =========================
     language = get_language()
     categories = Category.objects.all()
-    products_by_category = {}
+    gallery = Gallery.objects.all()[:9]
+    certificates = Certificate.objects.all()[:9]
 
-    all_products = Product.objects.filter(available=True)
-    for product in all_products:
+    products = Product.objects.filter(available=True)
+
+    # tarjimalar
+    for product in products:
         product.name_trans = product.get_name(language)
         product.description_trans = product.get_description(language)
         product.content_trans = product.get_content(language)
 
-    all_paginator = Paginator(all_products, 12)
-    all_page_number = request.GET.get("page_all", 1)
-    all_paginated_products = all_paginator.get_page(all_page_number)
+    paginator = Paginator(products, 12)
+    page = request.GET.get("page_all")
+    all_products = paginator.get_page(page)
 
-    # Kategoriya bo‘yicha mahsulotlar
+    # kategoriya bo‘yicha
+    products_by_category = {}
     for category in categories:
-        category_products = Product.objects.filter(category=category, available=True)
+        cat_products = products.filter(category=category)
 
-        for product in category_products:
-            product.name_trans = product.get_name(language)
-            product.description_trans = product.get_description(language)
-            product.content_trans = product.get_content(language)
+        paginator = Paginator(cat_products, 12)
+        page = request.GET.get(f"page_{category.slug}")
+        products_by_category[category.slug] = paginator.get_page(page)
 
-        paginator = Paginator(category_products, 12)
-        page_number = request.GET.get(f'page_{category.slug}', 1)
-        paginated_products = paginator.get_page(page_number)
+    menu_text = TRANSLATIONS["menu"].get(language, TRANSLATIONS["menu"]["en"])
 
-        products_by_category[category.slug] = paginated_products
+    # Yangiliklar (6 ta)
+    news_list = News.objects.order_by("-created_at")[:6]
 
-    menu_text = TRANSLATIONS['menu'].get(language, TRANSLATIONS['menu']['en'])
-    news = News.objects.first()
-    if news:
-        news.title = getattr(news, f'title_{language}', news.title_en)
-        news.text = getattr(news, f'text_{language}', news.text_en)
+    for n in news_list:
+        n.title_trans = n.get_title(language)
+        n.text_trans = n.get_text(language)
+        n.img_url = n.get_img()  # url yoki None
+
 
     context = {
-        'categories': categories,
-        'products_by_category': products_by_category,
-        'all_products': all_paginated_products,
-        'menu_text': menu_text,
-        'language': language,
-        'gallery': gallery,
-        'active_page': 'index',
-        'certificates': certificates,
-        'news': news,
+        "categories": categories,
+        "products_by_category": products_by_category,
+        "all_products": all_products,
+        "menu_text": menu_text,
+        "language": language,
+        "gallery": gallery,
+        "certificates": certificates,
+        "news_list": news_list,
     }
-    return render(request, 'base/index.html', context)
+
+    return render(request, "base/index.html", context)
 
 
 def shop_detail(request, slug):
     language = get_language()
     product = get_object_or_404(Product, slug=slug)
-    menu_text = TRANSLATIONS['menu'].get(language, TRANSLATIONS['menu']['en'])
-    
+
     product.name_trans = product.get_name(language)
     product.description_trans = product.get_description(language)
     product.content_trans = product.get_content(language)
-    ctx ={
-        'product': product, 
-        'language': language, 
-        'menu_text': menu_text}
-    return render(request, 'base/shop-detail.html', ctx)
+
+    menu_text = TRANSLATIONS["menu"].get(language, TRANSLATIONS["menu"]["en"])
+
+    return render(
+        request,
+        "base/shop-detail.html",
+        {
+            "product": product,
+            "language": language,
+            "menu_text": menu_text,
+        },
+    )
+
 
 def about(request):
-    return render(request, 'base/about.html')
+    return render(request, "base/about.html")
 
 
-def make_order(request):
-    if request.method == "POST":
-        # Foydalanuvchi ma'lumotlarini olish
-        full_name = request.POST.get("full_name")
-        email = request.POST.get("email")
-        phone = request.POST.get("phone")
-        note = request.POST.get("note")
-        # Majburiy maydonlar to‘ldirilganligini tekshirish
-        if all([full_name, email, phone]):
-            # Buyurtmani yaratish
-            order = Order.objects.create(
-                full_name=full_name,
-                email=email,
-                phone=phone,
-                note=note
-            )
+def news(request):
+    language = get_language()
+    menu_text = TRANSLATIONS["menu"].get(language, TRANSLATIONS["menu"]["en"])
+    news = News.objects.order_by("-created_at")
 
-            messages.success(request, "Xabaringiz muvaffaqiyatli qabul qilindi!")
-            return redirect("index")  # O'zgartiring: 'home' o‘rniga kerakli sahifa nomini yozing
-        else:
-            messages.error(request, "Iltimos, barcha majburiy maydonlarni to‘ldiring.")
-    return render(request, "base/chackout.html")
+    for n in news:
+        n.title_trans = n.get_title(language)
+        n.text_trans = n.get_text(language)
+        n.img_url = n.get_img()
+
+    paginator = Paginator(news, 3)
+    page = request.GET.get("page")
+    all_news = paginator.get_page(page)
+
+    context = {
+        "menu_text": menu_text,
+        "all_news": all_news,
+        "language": language,
+    }
+    return render(request, "base/news.html", context)
+
+def news_detail(request, id):
+    language = get_language()
+    menu_text = TRANSLATIONS["menu"].get(language, TRANSLATIONS["menu"]["en"])
+
+    news = get_object_or_404(News, id=id)
+
+    # title/text
+    news.title_trans = news.get_title(language)
+    news.text_trans = news.get_text(language)
+
+    # rasm
+    news.img_url = news.get_img()
+
+    # CKEditor content (asosiy matn)
+    # uz/ru/en dan qaysi biri bo'lsa shuni oladi, bo'sh bo'lsa en ga fallback
+    news.content_trans = getattr(news, f"content_{language}", None) or news.content_en or ""
+
+    return render(
+        request,
+        "base/news_detail.html",
+        {
+            "news": news,
+            "menu_text": menu_text,
+            "language": language,
+        },
+    )

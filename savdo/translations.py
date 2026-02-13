@@ -2,6 +2,7 @@ TRANSLATIONS = {
     'menu': {
         'uz': {
             'home': "主页",
+            'news':"訊息",
             'products': "产品",
             'product_details': "产品详情",
             'about': "关于我们",
@@ -44,6 +45,7 @@ TRANSLATIONS = {
         },
         'ru': {
             'home': "Домашняя страница",
+            'news':"Новости",
             'products': "Продукты",
             'product_details': "Детали продукта",
             'about': "О нас",
@@ -86,6 +88,7 @@ TRANSLATIONS = {
         },
         'en': { 
             'home': "Home",
+            'news':"News",
             'products': "Products",
             'product_details': "Product details",
             'about': "About us",

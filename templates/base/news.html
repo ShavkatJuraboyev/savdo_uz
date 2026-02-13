@@ -1,0 +1,114 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+
+
+ <div class="container-fluid page-header py-5">
+     <h1 class="text-center text-white display-6">{{ menu_text.news }}</h1>
+     <ol class="breadcrumb justify-content-center mb-0">
+         <li class="breadcrumb-item"><a href="#">{{ menu_text.home }}</a></li>
+         <li class="breadcrumb-item active text-white">{{ menu_text.news }}</li>
+     </ol>
+ </div>
+
+<div class="container-fluid fruite py-5" id="news">
+    <div class="container py-5">
+        <h1 class="mb-4">{{ menu_text.news }}</h1>
+
+        <div class="row g-4">
+            <div class="col-lg-12">
+                <div class="row g-4">
+                    <div class="col-lg-12">
+                        <div class="row g-4 justify-content-center">
+
+                            {% for n in all_news %}
+                            <div class="col-md-6 col-lg-6 col-xl-4">
+                                <div class="rounded position-relative fruite-item h-100 d-flex flex-column">
+
+                                    <div class="fruite-img" style="height: 240px;">
+                                        {% if n.img_url %}
+                                            <img src="{{ n.img_url }}" class="img-fluid w-100 rounded-top"
+                                                 alt="{{ n.title_trans }}"
+                                                 style="height: 240px; object-fit: cover;">
+                                        {% else %}
+                                            <img src="{% static 'img/placeholder.jpg' %}" class="img-fluid w-100 rounded-top"
+                                                 alt="news"
+                                                 style="height: 240px; object-fit: cover;">
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
+                                         style="top: 10px; left: 10px;">
+                                        {{ n.created_at|date:"d.m.Y" }}
+                                    </div>
+
+                                    <div class="p-4 border border-secondary border-top-0 rounded-bottom flex-grow-1 d-flex flex-column">
+                                        <h4>{{ n.title_trans }}</h4>
+
+                                        <p class="mb-3">
+                                            {{ n.text_trans|default:""|striptags|truncatechars:130 }}
+                                        </p>
+
+                                        <div class="d-flex justify-content-between flex-lg-wrap mt-auto">
+                                            <a href="{% url 'news_detail' n.id %}" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                    <i class="fa fa-eye me-2 text-primary"></i> {{ menu_text.details }}
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            {% empty %}
+                            <div class="col-12">
+                                <div class="alert alert-warning mb-0">
+                                    There is no news yet.
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                            {% if all_news.paginator.num_pages > 1 %}
+                            <div class="col-12">
+                                <div class="pagination d-flex justify-content-center mt-5">
+
+                                    {# Oldingi #}
+                                    {% if all_news.has_previous %}
+                                        <a href="?page={{ all_news.previous_page_number }}" class="rounded">&laquo;</a>
+                                    {% else %}
+                                        <a class="rounded disabled">&laquo;</a>
+                                    {% endif %}
+
+                                    {# Page raqamlar #}
+                                    {% for num in all_news.paginator.page_range %}
+                                        {% if all_news.number == num %}
+                                            <a href="?page={{ num }}" class="active rounded">{{ num }}</a>
+                                        {% else %}
+                                            <a href="?page={{ num }}" class="rounded">{{ num }}</a>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {# Keyingi #}
+                                    {% if all_news.has_next %}
+                                        <a href="?page={{ all_news.next_page_number }}" class="rounded">&raquo;</a>
+                                    {% else %}
+                                        <a class="rounded disabled">&raquo;</a>
+                                    {% endif %}
+
+                                </div>
+                            </div>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock content %}

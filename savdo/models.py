@@ -132,9 +132,8 @@ class Certificate(models.Model):
         verbose_name = _('Sertifikat')
         verbose_name_plural = _('Sertifikatlar')
 
-
 class News(models.Model):
-    title_uz = models.CharField(max_length=200, verbose_name=_('Yangilik sarlavhasi (UZ)'))
+    title_uz = models.CharField(max_length=200, verbose_name=_('Yangilik sarlavhasi (UZ)'), blank=True, null=True)
     title_ru = models.CharField(max_length=200, verbose_name=_('Yangilik sarlavhasi (RU)'), blank=True, null=True)
     title_en = models.CharField(max_length=200, verbose_name=_('Yangilik sarlavhasi (EN)'), blank=True, null=True)
 
@@ -142,9 +141,9 @@ class News(models.Model):
     text_ru = models.TextField(verbose_name=_('Yangilik matni (RU)'), null=True, blank=True)        
     text_en = models.TextField(verbose_name=_('Yangilik matni (EN)'), null=True, blank=True)
 
-    # content_uz = RichTextUploadingField(config_name='extends_uz', verbose_name="Yangilik matni (UZ)", null=True, blank=True)
-    # content_en = RichTextUploadingField(config_name='extends_en', verbose_name="Yangilik matni (EN)", null=True, blank=True)
-    # content_ru = RichTextUploadingField(config_name='extends_ru', verbose_name="Yangilik matni (RU)", null=True, blank=True)
+    content_uz = RichTextUploadingField(config_name='extends_uz', verbose_name="Yangilik matni (UZ)", null=True, blank=True)
+    content_en = RichTextUploadingField(config_name='extends_en', verbose_name="Yangilik matni (EN)", null=True, blank=True)
+    content_ru = RichTextUploadingField(config_name='extends_ru', verbose_name="Yangilik matni (RU)", null=True, blank=True)
 
     image = models.ImageField(upload_to='news/', verbose_name=_('Yangilik rasmi'), null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Yaratilgan vaqti'))

@@ -91,10 +91,6 @@
                                                 <a href="{{ product.files.url }}" target="_blank" class="btn border border-secondary rounded-pill px-3 text-success">
                                                 <i class ="fa fa-download me-2 text-success"></i> {{ menu_text.details }}
                                             </a>
-                                            {% else %}
-                                                <a href="" class="btn border border-secondary rounded-pill px-3 text-success">
-                                                <i class ="fa fa-download me-2 text-success"></i> {{ menu_text.details }}
-                                            </a>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -196,46 +192,74 @@
 </div>
 <!-- Fruits Shop End-->
 
-<!-- Banner Section Start-->
-<!-- <div class="container-fluid banner bg-secondary my-5">
+<!-- News Start -->
+<div class="container-fluid vesitable py-5" >
     <div class="container py-5">
-        <div class="row g-4 align-items-center">
-            <div class="col-12 col-lg-6">
-                <div class="py-4 text-center text-lg-start">
-                    <h1 class="display-5 display-lg-3 text-white">{{ menu_text.new_exotic_fruits }}</h1>
-                    <p class="fw-normal display-6 text-dark mb-4">{{news.title}}</p>
-                    <p class="mb-4 text-dark">{{news.text}}</p>
-                    <a href="#contact" class="banner-btn btn border-2 border-white rounded-pill text-dark py-3 px-5">{{ menu_text.buy_now }}</a>
+        <div class="d-flex align-items-center justify-content-between flex-wrap mb-4">
+            <h1 class="mb-0 text-success">{{ menu_text.news|default:"News" }}</h1>
+        </div>
+
+        <div class="owl-carousel vegetable-carousel justify-content-center">
+
+            {% for n in news_list %}
+            <div class="border border-success rounded position-relative vesitable-item overflow-hidden">
+                <div class="vesitable-img" style="height: 220px;">
+                    {% if n.img_url %}
+                        <img src="{{ n.img_url }}" class="img-fluid w-100 h-100 rounded-top" style="object-fit: cover;" alt="{{ n.title_trans }}">
+                    {% else %}
+                        <img src="{% static 'img/placeholder.jpg' %}" class="img-fluid w-100 h-100 rounded-top" style="object-fit: cover;" alt="news">
+                    {% endif %}
+                </div>
+
+                <div class="text-white bg-success px-3 py-1 rounded position-absolute"
+                    style="top: 10px; right: 10px;">
+                    {{ n.created_at|date:"d.m.Y" }}
+                </div>
+
+                <div class="p-4 rounded-bottom bg-white">
+                    <h4 class="mb-2">{{ n.title_trans }}</h4>
+                    <p class="text-muted mb-3">
+                        {{ n.text_trans|default:""|striptags|truncatechars:110 }}
+                    </p>
+
+                    <div class="d-flex justify-content-between flex-wrap">
+                        <a href="{% url 'news_detail' n.id %}" class="btn border border-secondary rounded-pill px-3 text-primary">
+                            <i class="fa fa-eye me-2 text-primary"></i> {{ menu_text.details }}
+                        </a>
+
+                    </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-6 text-center">
-                <div class="position-relative d-inline-block">
-                    <img src="{{news.get_img}}" class="img-fluid w-100 rounded" alt="">
-                </div>
-            </div>
+            {% endfor %}
+
         </div>
     </div>
-</div> -->
-<!-- Banner Section End -->
+</div>
+<!-- News End -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const count = {{ news_list|length }};
+        const loopEnabled = count > 1;   // 1 ta bo‘lsa false
 
-<!-- <div class="container my-5">
-    <div class="row">
-        <div class="col-lg-6 mb-4">
-            <h5 class="text-center">Video 1</h5>
-            <div class="ratio ratio-16x9">
-                <iframe src="https://www.youtube.com/embed/KBYjHnmbEfA" title="YouTube video" allowfullscreen></iframe>
-            </div>
-        </div>
-        <div class="col-lg-6 mb-4">
-            <h5 class="text-center">Video 2</h5>
-            <div class="ratio ratio-16x9">
-                <iframe src="https://www.youtube.com/embed/HEjDV2_jeos" title="YouTube video" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-</div> -->
+        $("#news .vegetable-carousel").owlCarousel({
+            loop: loopEnabled,
+            margin: 25,
+            nav: true,
+            dots: true,
+            autoplay: loopEnabled,
+            autoplayTimeout: 4000,
+            smartSpeed: 800,
+            responsive: {
+                0: { items: 1 },
+                576: { items: 2 },
+                992: { items: 3 }
+            }
+        });
+    });
+</script>
 
-<!-- Gallery Section Start -->
+
+
 <div class="container-fluid py-5" id="gallary">
     <div class="container py-5">
         <div class="text-center mx-auto mb-5" style="max-width: 700px;">
@@ -350,9 +374,8 @@
         });
     </script>
 </div>
-<!-- Gallery Section End -->
 
-<!-- About Start --> 
+
 <section class="py-5 bg-light position-relative" id="about">
   <div class="container py-5">
     <h1 class="display-5 fw-bold text-center mb-3 text-success animate__animated animate__fadeInDown">
@@ -449,106 +472,7 @@
 
   </div>
 </section>
-<!-- About End -->
 
-
- <!-- <div class="container-fluid py-5 mt-5">
-     <div class="container py-5">
-         <h1 class="fw-bold mb-0 ">{{menu_text.about_certificates}}</h1>
-         <div class="vesitable">
-             <div class="owl-carousel vegetable-carousel justify-content-center">
-                {% for certificate in certificates %}
-                    <div class="border border-primary rounded position-relative vesitable-item">
-                        <div class="vesitable-img">
-                            <img src="{{ certificate.get_image_url}}" class="img-fluid w-100 rounded-top" alt="{{certificate.id}}" style="width: 100%; height: 100%; object-fit: cover;" onclick="openCertificateModal(this)">
-                        </div>
-                    </div>
-                 {% endfor %}
-        <div class="certificate-modal" id="certificateModal" onclick="closeCertificateModal(event)">
-            <div class="certificate-modal-content">
-            <button class="certificate-modal-close" onclick="closeCertificateModal(event)">&times;</button>
-            <img src="" alt="Certificate Image" id="certificateModalImg">
-            </div>
-        </div>
-
-        <style>
-            .certificate-img {
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            }
-            .certificate-img:hover {
-            transform: scale(1.05);
-            }
-            .certificate-modal {
-            display: none;
-            position: fixed;
-            z-index: 1050;
-            left: 0;
-            top: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.8);
-            align-items: center;
-            justify-content: center;
-            }
-            .certificate-modal.active {
-            display: flex;
-            }
-            .certificate-modal-content {
-            max-width: 90vw;
-            max-height: 90vh;
-            border-radius: 16px;
-            background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            }
-            .certificate-modal-content img {
-            max-width: 90vw;
-            max-height: 90vh;
-            border-radius: 16px;
-            }
-            .certificate-modal-close {
-            position: absolute;
-            top: 10px;
-            right: 18px;
-            font-size: 2rem;
-            color: #fff;
-            background: none;
-            border: none;
-            cursor: pointer;
-            }
-        </style>
-
-        <script>
-            function openCertificateModal(img) {
-            var modal = document.getElementById('certificateModal');
-            var modalImg = document.getElementById('certificateModalImg');
-            modalImg.src = img.src;
-            modalImg.alt = img.alt;
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            }
-            function closeCertificateModal(event) {
-            if (event.target.classList.contains('certificate-modal') || event.target.classList.contains('certificate-modal-close')) {
-                document.getElementById('certificateModal').classList.remove('active');
-                document.body.style.overflow = '';
-            }
-            }
-            document.addEventListener('keydown', function(e) {
-            if (e.key === "Escape") {
-                document.getElementById('certificateModal').classList.remove('active');
-                document.body.style.overflow = '';
-            }
-            });
-        </script>
-             </div>
-         </div>
-     </div>
- </div> -->
-
-<!-- Contact Start -->
 <div class="container-fluid contact py-5" id="contact">
     <div class="container py-5">
         <div class="p-5 bg-light rounded">
@@ -578,7 +502,7 @@
                         <i class="fas fa-map-marker-alt fa-2x text-success me-4"></i>
                         <div>
                             <h4>{{ menu_text.address }}</h4>
-                            <p class="mb-2"> Дустлик, Чинабад, Халклар дустлиги улица, 34</p>
+                            <p class="mb-2"> Mustaqillik 34 str, Uzbekistan district, Uzbekistan</p>
                         </div>
                     </div>
                     <div class="d-flex p-4 rounded mb-4 bg-white">
@@ -597,17 +521,17 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-start pt-4">
-                        <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-instagram"></i></a>
+                        <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href="https://www.instagram.com/zamin_garden?igsh=MWtsOHp0ZWRtNHQ2MQ=="><i class="fab fa-instagram"></i></a>
                         <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-telegram"></i></a>
+                        <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href="https://t.me/Zamingarden"><i class="fab fa-telegram"></i></a>
                         <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href="https://wa.me/qr/YTHILTE4J3YJH1"><i class="fab fa-whatsapp"></i></a>
-                        <a class="btn btn-outline-secondary btn-md-square rounded-circle" href=""><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-outline-secondary btn-md-square rounded-circle" href="https://youtube.com/@zamingarden1?si=ESuGcvtJvnIzDjH6"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- Contact End -->
+
 
 {% endblock content %}

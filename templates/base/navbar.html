@@ -9,11 +9,11 @@
 
     <!-- Navbar start -->
         <div class="container-fluid fixed-top">
-            <div class="container topbar bg-success d-none d-lg-block">
+            <div class="container topbar bg-color d-none d-lg-block">
                 <div class="d-flex justify-content-between">
                     <div class="top-info ps-2">
-                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Дустлик, Чинабад, Халклар дустлиги улица, 34</a></small>
-                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">sanjar@zamingarden.uz</a></small>
+                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Mustaqillik 34 str, Uzbekistan district, Uzbekistan</a></small>
+                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">info@zamingarden.uz</a></small>
                     </div>
                     <!-- <div class="top-link pe-2">
                         <a href="#" class="text-white"><small class="text-white mx-2">Maxfiylik siyosati</small>/</a>
@@ -25,7 +25,7 @@
             <div class="container px-0">
                 <nav class="navbar navbar-light bg-white navbar-expand-xl">
                     <a href="/" class="navbar-brand">
-                        <img src="{% static 'img/logo.png' %}" alt="Zamin Garden Logo" class="img-fluid" style="max-height: 100px;">
+                        <img src="{% static 'img/logo.png' %}" alt="Zamin Garden Logo" class="img-fluid" style="max-height: 65px; " >
                     </a>    
                     <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                         <span class="fa fa-bars text-success"></span>
@@ -33,6 +33,7 @@
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
                             <a href="{% url 'index' %}#home" class="nav-item nav-link {% if active_page == 'home' %}active{% endif %}">{{ menu_text.home }}</a>
+                            <a href="{% url 'news' %}#news" class="nav-item nav-link {% if active_page == 'news' %}active{% endif %}">{{ menu_text.news }}</a>
                             <a href="{% url 'index' %}#products" class="nav-item nav-link {% if active_page == 'products' %}active{% endif %}">{{ menu_text.products }}</a>
                             <a href="{% url 'index' %}#gallary" class="nav-item nav-link {% if active_page == 'gallery' %}active{% endif %}">{{ menu_text.gallery }}</a>
                             <a href="{% url 'index' %}#about" class="nav-item nav-link {% if active_page == 'about' %}active{% endif %}">{{ menu_text.about }}</a>

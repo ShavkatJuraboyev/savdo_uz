@@ -1,0 +1,79 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">
+        {{ news.title_trans }}
+    </h1>
+</div>
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+
+            {# RASM #}
+            {% if news.img_url %}
+            <div class="mb-4">
+                <img src="{{ news.img_url }}" class="img-fluid w-100 rounded-4 shadow"
+                     style="max-height: 480px; object-fit: cover;" alt="{{ news.title_trans }}">
+            </div>
+            {% endif %}
+
+            {# META: sana #}
+            <div class="d-flex align-items-center gap-3 text-muted mb-3">
+                <i class="fa fa-calendar"></i>
+                <span>{{ news.created_at|date:"d.m.Y H:i" }}</span>
+            </div>
+
+            {# QISQA TEXT (agar bo‘lsa) #}
+            {% if news.text_trans %}
+            <div class="p-4 bg-light rounded-4 mb-4">
+                <h5 class="mb-2 text-success">{{ menu_text.news|default:"Yangilik" }}</h5>
+                <p class="mb-0 fs-5">{{ news.text_trans }}</p>
+            </div>
+            {% endif %}
+
+            {# ASOSIY CONTENT (RichText) #}
+            {% if news.content_trans %}
+            <div class="bg-white p-4 rounded-4 shadow-sm">
+                <div class="news-content">
+                    {{ news.content_trans|safe }}
+                </div>
+            </div>
+            {% endif %}
+
+            {# ORQAGA #}
+            <div class="mt-4">
+                <a href="{% url 'news' %}" class="btn btn-success rounded-pill px-4">
+                    <i class="fa fa-arrow-left me-2"></i> {{ menu_text.news }}
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<style>
+    /* CKEditor content chiroyli ko‘rinishi uchun */
+    .news-content img{
+        max-width: 100%;
+        height: auto;
+        border-radius: 12px;
+    }
+    .news-content p{
+        line-height: 1.8;
+        font-size: 1.05rem;
+        margin-bottom: 14px;
+    }
+    .news-content h1, .news-content h2, .news-content h3, .news-content h4{
+        margin-top: 18px;
+        margin-bottom: 12px;
+        font-weight: 700;
+    }
+</style>
+
+{% endblock %}
